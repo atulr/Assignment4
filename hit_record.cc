@@ -33,6 +33,12 @@ bool HitRecord::hit(float t, const int &tri_address) {
 	return false;
 }
 
+bool HitRecord::did_hit(){
+	if (distance < max_t)
+		return true;
+	return false;
+}
+
 float HitRecord::min_t() {
 	return distance;
 }

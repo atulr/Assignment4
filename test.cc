@@ -5,16 +5,7 @@
 // Only include stdio for printf on the non-trax version
 #if TRAX==0
 #include <stdio.h>
-#include <curses.h>
 #endif
-
-inline Trigonum loadTriangleFromMemory(const int &addr) {
-	Vector e1( loadf( addr, 0 ), loadf( addr, 1 ), loadf(addr, 2 ) );
-	Vector e2( loadf(addr, 3 ), loadf(addr, 4 ), loadf(addr, 5 ) );
-	Vector e3( loadf(addr, 6 ), loadf(addr, 7 ), loadf(addr, 8 ) );
-	Trigonum triangle(e1, e2, e3, loadi(addr, 9), loadi(addr, 10));
-	return triangle;
-}
 
 inline Vector loadFooFromMemory(const int &address) {
 	float x, y, z;
@@ -43,14 +34,15 @@ int main()
 	Color result;
 
 	Image image(xres, yres, start_fb);
-	
+
 	PinHoleCamera camera(loadi(0, 10));
 	Ray ray;
 
 	int start_tris = loadi(0, 28);
 	int num_tris = loadi(0, 29);
 	Shader shade;
-
+	int start_scene = loadi( 0, 8 );
+	BVH bvh(start_scene);
 	for(int pix = atomicinc(0); pix < xres*yres; pix = atomicinc(0)){
 		int i = pix / xres;
 		int j = pix % xres;
@@ -60,12 +52,10 @@ int main()
 
 		camera.make_ray(ray, x, y);
 		HitRecord hit_record;
-		 for(int k = 0; k < num_tris; k++) {
-		  Trigonum tri = loadTriangleFromMemory(start_tris + (k * 11));
-		  tri.intersects(hit_record, ray, start_tris + (k * 11));
-		  result = shade.lambertian(hit_record, ray, light, ambient_light);
-		  image.set(i, j, result);
-		 }
+
+		bvh.intersect(hit_record, ray);
+		result = shade.lambertian(hit_record, ray, light, ambient_light);
+		image.set(i, j, result);
 	}
 	trax_cleanup();
 }

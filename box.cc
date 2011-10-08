@@ -32,7 +32,7 @@ float Box::max(float t1, float t2) {
 }
 
 
-bool Box::intersects(Ray ray) {
+bool Box::intersect(HitRecord &hit_record, Ray &ray) {
 	float tx1, tx2, ty1, ty2, tz1, tz2, tnear, tfar;
 	tnear = -9999999999.f;
 	tfar = 9999999999.f;

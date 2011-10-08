@@ -24,6 +24,7 @@ public:
 	}
 	void set_t(float t);
 	float min_t();
+	bool did_hit();
 	bool hit(float t, const int &address);
 	Trigonum obj_id();
 	Trigonum loadTriangleFromMemory(const int &address);

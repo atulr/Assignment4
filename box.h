@@ -10,6 +10,7 @@
 
 #include "vector.h"
 #include "ray.h"
+#include "hit_record.h"
 
 class Box {
 	Vector P1;
@@ -21,7 +22,7 @@ public:
 		P1 = plane_1;
 		P2 = plane_2;
 	}
-	bool intersects(Ray ray);
+	bool intersect(HitRecord &hit_record, Ray &ray);
 };
 
 
