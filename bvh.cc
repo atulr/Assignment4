@@ -35,7 +35,7 @@ bool BVH::interior_node(const int &num_children) {
 }
 
 bool BVH::empty(int &stack_pointer) {
-	if (stack_pointer <= 0)
+	if (stack_pointer < 0)
 		return true;
 	return false;
 }
@@ -50,6 +50,9 @@ void BVH::intersect(HitRecord &hit_record, Ray &ray) {
 	int tri_addr = 0;
 	int node_addr = 0;
 	while(true) {
+//		for(j = 0 ; j< 32; j++)
+//			trax_printf(stack[j]);
+//		trax_printf(666);
 		node_addr = start_bvh + node_id * 8;
 		Box b = loadBoxFromMemory(node_addr);
 		HitRecord box_hit;
@@ -63,6 +66,7 @@ void BVH::intersect(HitRecord &hit_record, Ray &ray) {
 				continue;
 			}
 			tri_addr = left_id;
+
 			for(int i = 0; i < num_children; ++i) {
 				Trigonum tri = loadTriangleFromMemory(tri_addr + (i * 11));
 				tri.intersects(hit_record, ray, tri_addr + (i * 11));
