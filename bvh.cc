@@ -41,24 +41,25 @@ bool BVH::empty(int &stack_pointer) {
 }
 
 void BVH::intersect(HitRecord &hit_record, Ray &ray) {
-	int stack[32];
+	int stack[32] ;
+	int j = 0;
 	int node_id = 0;
-	int sp = 0;
-	int left_id;
-	int num_children;
-	int tri_addr;
-	int node_addr = start_bvh + node_id * 8;
+	int sp = -1;
+	int left_id = 0;
+	int num_children = 0;
+	int tri_addr = 0;
+	int node_addr = 0;
 	while(true) {
+		node_addr = start_bvh + node_id * 8;
 		Box b = loadBoxFromMemory(node_addr);
 		HitRecord box_hit;
-		b.intersect(box_hit, ray);
 
-		if (box_hit.did_hit()) {
+		if (b.intersect(box_hit, ray)) {
 			left_id = loadi( node_addr, 7 );
 			num_children = loadi( node_addr, 6 );
 			if (interior_node(num_children)) {
-				stack[ sp++ ] = left_id + 1; //right child pushed onto the stack
-				node_addr = left_id;
+				stack[ ++sp ] = left_id + 1; //right child pushed onto the stack
+				node_id = left_id;
 				continue;
 			}
 			tri_addr = left_id;
@@ -69,7 +70,7 @@ void BVH::intersect(HitRecord &hit_record, Ray &ray) {
 		}
 		if (empty(sp))
 			break;
-		node_addr = stack[ sp-- ];
+		node_id = stack[ sp-- ];
 	}
 }
 
