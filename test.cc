@@ -43,7 +43,6 @@ int main()
 	Shader shade;
 	int start_scene = loadi( 0, 8 );
 	BVH bvh(start_scene);
-	int temp = 0;
 	for(int pix = atomicinc(0); pix < xres*yres; pix = atomicinc(0)){
 		int i = pix / xres;
 		int j = pix % xres;
@@ -55,7 +54,7 @@ int main()
 		HitRecord hit_record;
 		bvh.intersect(hit_record, ray);
 
-		result = shade.lambertian(hit_record, ray, light, ambient_light);
+		result = shade.lambertian(bvh, hit_record, ray, light, ambient_light);
 		image.set(i, j, result);
 	}
 	trax_cleanup();

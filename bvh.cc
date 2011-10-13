@@ -50,13 +50,10 @@ void BVH::intersect(HitRecord &hit_record, Ray &ray) {
 	int tri_addr = 0;
 	int node_addr = 0;
 	while(true) {
-//		for(j = 0 ; j< 32; j++)
-//			trax_printf(stack[j]);
-//		trax_printf(666);
+
 		node_addr = start_bvh + node_id * 8;
 		Box b = loadBoxFromMemory(node_addr);
 		HitRecord box_hit;
-
 		if (b.intersect(box_hit, ray)) {
 			left_id = loadi( node_addr, 7 );
 			num_children = loadi( node_addr, 6 );

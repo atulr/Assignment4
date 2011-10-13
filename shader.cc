@@ -6,7 +6,6 @@
  */
 #include "trax.hpp"
 #include "shader.h"
-// #include "vector.cc"
 
 // Only include stdio for printf on the non-trax version
 #if TRAX==0
@@ -21,7 +20,7 @@ inline Vector normal(Trigonum triangle) {
 	return n.normalize();
 }
 
-Color Shader::lambertian(HitRecord hit_record, Ray ray, PointLight point_light, Color ambient_light) {
+Color Shader::lambertian(BVH &bvh, HitRecord hit_record, Ray ray, PointLight point_light, Color ambient_light) {
 
 	float costheta, cosphi;
 	Ray ray_to_light_source;
@@ -40,7 +39,7 @@ Color Shader::lambertian(HitRecord hit_record, Ray ray, PointLight point_light, 
 	ray_to_light_source.set_origin(hit_position);
 	ray_to_light_source.set_direction(Ln);
 	if (cosphi > 0.f) {
-		if (!tri.intersects_other_triangles(hit_record, ray_to_light_source, L.length())) {
+		if (!tri.intersects_other_triangles(bvh, hit_record, ray_to_light_source, L.length())) {
 			light = light.add(point_light.get_color().times((float)(tri.Kd() * cosphi)));
 		}else{
 			 //it's a shadow with ambient lighting :D:D:D

@@ -34,13 +34,13 @@ INCLUDEDIR=../include
 LINKERDIR=../linker
 
 # Cornell Scene
-VIEWFILE=\"${SIMDIR}/views/cornell_obj.view\"
-MODELFILE=\"${SIMDIR}/test_models/cornell/CornellBox.obj\"
-LIGHTFILE=\"${SIMDIR}/lights/cornell.light\"
+#VIEWFILE=\"${SIMDIR}/views/cornell_obj.view\"
+#MODELFILE=\"${SIMDIR}/test_models/cornell/CornellBox.obj\"
+#LIGHTFILE=\"${SIMDIR}/lights/cornell.light\"
 # Conference Scene
-# VIEWFILE=\"${SIMDIR}/views/conference.view\"
-# MODELFILE=\"${SIMDIR}/test_models/conference.iw\"
-# LIGHTFILE=\"${SIMDIR}/lights/conference.light\"
+VIEWFILE=\"${SIMDIR}/views/conference.view\"
+MODELFILE=\"${SIMDIR}/test_models/conference.obj\"
+LIGHTFILE=\"${SIMDIR}/lights/conference.light\"
 
 # Should not need to edit below this point unless you know what you're doing
 # The compiler to use for the executable
